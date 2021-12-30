@@ -1,8 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # study
-/clitest01
-/tarea01
+/projects/clitest01
+/projects/tarea01
 
 # compiled output
 /dist
