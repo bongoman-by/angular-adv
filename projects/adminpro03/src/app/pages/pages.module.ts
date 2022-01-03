@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartListComponent } from './chart-list/chart-list.component';
 import { PagesComponent } from './pages.component';
 import { ProgressComponent } from './progress/progress.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ProgressComponent } from './progress/progress.component';
     ProgressComponent,
     ChartListComponent,
     PagesComponent,
+    AccountSettingsComponent,
   ],
   imports: [
     SharedModule,
@@ -30,6 +32,7 @@ import { ProgressComponent } from './progress/progress.component';
     ProgressComponent,
     ChartListComponent,
     PagesComponent,
+    AccountSettingsComponent,
   ],
 })
 export class PagesModule {}
