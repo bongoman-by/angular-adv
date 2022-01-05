@@ -120,9 +120,7 @@
               "projects/tarea01/src/favicon.ico",
               "projects/tarea01/src/assets"
             ],
-            "styles": [
-              "projects/tarea01/src/styles.css"
-            ],
+            "styles": ["projects/tarea01/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -187,9 +185,7 @@
               "projects/tarea01/src/favicon.ico",
               "projects/tarea01/src/assets"
             ],
-            "styles": [
-              "projects/tarea01/src/styles.css"
-            ],
+            "styles": ["projects/tarea01/src/styles.css"],
             "scripts": []
           }
         }
@@ -222,9 +218,7 @@
               "projects/adminpro03/src/favicon.ico",
               "projects/adminpro03/src/assets"
             ],
-            "styles": [
-              "projects/adminpro03/src/styles.scss"
-            ],
+            "styles": ["projects/adminpro03/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -290,9 +284,7 @@
               "projects/adminpro03/src/favicon.ico",
               "projects/adminpro03/src/assets"
             ],
-            "styles": [
-              "projects/adminpro03/src/styles.scss"
-            ],
+            "styles": ["projects/adminpro03/src/styles.scss"],
             "scripts": []
           }
         }
