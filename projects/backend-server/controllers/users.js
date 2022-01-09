@@ -5,15 +5,22 @@ const User = require("../models/user");
 const { generateJWT } = require("../helpers/jwt");
 
 const getUsers = async (req, res) => {
-  users = await User.find();
+  const from = +req.query.from || 0;
+  const limit = +req.query.limit || 5;
+  const [users, total] = await Promise.all([
+    User.find().skip(from).limit(limit),
+    User.count(),
+  ]);
+
   res.json({
     ok: true,
     length: users.length,
+    total: total,
     users: users,
   });
 };
 
-const addUser = (req, res = response) => {
+const addUser = async (req, res = response) => {
   const { password } = req.body;
 
   user = new User(req.body);
@@ -22,7 +29,7 @@ const addUser = (req, res = response) => {
   user.password = bcrypt.hashSync(password, salt);
 
   // Create a user based on the schema we created:
-  User.create(user)
+  await User.create(user)
     .then(function (userDB) {
       generateJWT(userDB.id).then((token) => {
         res.json({

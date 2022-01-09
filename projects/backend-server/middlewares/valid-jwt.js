@@ -17,7 +17,7 @@ const validJWT = async (req = request, res = response, next) => {
           msg: err.message,
         });
       } else {
-        console.log(decoded);
+        req.uid = decoded.id;
         next();
       }
     });
