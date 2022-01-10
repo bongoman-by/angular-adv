@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const User = require("../models/user");
 const { generateJWT } = require("../helpers/jwt");
+const { googleVerify } = require("../helpers/google-verify");
 
 const login = (req, res = response) => {
   const { email, password } = req.body;
@@ -39,4 +40,66 @@ const login = (req, res = response) => {
     });
 };
 
-module.exports = { login };
+const googleSignIn = async (req, res = response) => {
+  const { token } = req.body;
+
+  try {
+    const { email, name, picture, sub } = await googleVerify(token);
+    User.findOne({ email })
+      .then((userDB) => {
+        if (userDB) {
+          User.findByIdAndUpdate(userDB.id, {
+            name,
+            password: sub,
+            image: picture,
+            google: true,
+          })
+            .then((userDB) => {
+              generateJWT(userDB.id).then((token) => {
+                res.json({
+                  ok: true,
+                  msg: `Welcome ${userDB.name}!`,
+                  token: token,
+                });
+              });
+            })
+            .catch((err) => {
+              res.status(500).json(err.message);
+            });
+        } else {
+          User.create({
+            name,
+            email,
+            password: sub,
+            image: picture,
+            google: true,
+          })
+            .then((userDB) => {
+              if (userDB) {
+                generateJWT(userDB.id).then((token) => {
+                  res.json({
+                    ok: true,
+                    msg: `Welcome ${userDB.name}!`,
+                    token: token,
+                  });
+                });
+              }
+            })
+            .catch((err) => {
+              res.status(500).json(err.message);
+            });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json(err.message);
+      });
+  } catch (err) {
+    if (err.name == "ValidationError") {
+      return res.status(422).json(err.message);
+    } else {
+      return res.status(500).json(err.message);
+    }
+  }
+};
+
+module.exports = { login, googleSignIn };

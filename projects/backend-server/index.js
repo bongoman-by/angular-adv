@@ -24,6 +24,8 @@ app.use("/api/doctors", require("./routes/doctors"));
 
 db(process.env.DB_CNN);
 
+app.use(express.static("projects/backend-server/public"));
+
 // MongoDB admin JQdATFho1Ggy2Zms
 const port = parseInt(process.env.PORT, 10) || 8000;
 app.listen(port, () => {
