@@ -14,15 +14,14 @@ const addHospital = (req, res = response) => {
   const hospital = new Hospital({ ...req.body, user: req.uid });
 
   Hospital.create(hospital)
-    .then(function (hospitalDB) {
+    .then((hospitalDB) => {
       res.json({
         ok: true,
         msg: `Add new hospital ${hospitalDB.name}!`,
       });
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.name == "ValidationError") {
-        console.error("Error Validating!", err.message);
         res.status(422).json(err.message);
       } else {
         res.status(500).json(err.message);
@@ -39,13 +38,14 @@ const updateHospital = (req, res = response) => {
     runValidators: true,
     context: "query",
   })
-    .then(function (hospital) {
-      console.log("Hospital updated!", hospital);
-      res.json(hospital);
+    .then((hospital) => {
+      res.json({
+        ok: true,
+        msg: `Update hospital ${hospital.name}!`,
+      });
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.name == "ValidationError") {
-        console.error("Error Validating!", err.message);
         res.status(422).json(err.message);
       } else {
         res.status(500).json(err.message);
@@ -69,7 +69,7 @@ const deleteHospital = (req, res = response) => {
         res.json({ ok: false, id: id, msg: "Hospital does not exist!" });
       }
     })
-    .catch(function (err) {
+    .catch((err) => {
       res.status(500).json(err.message);
     });
 };

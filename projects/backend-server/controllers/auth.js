@@ -102,4 +102,23 @@ const googleSignIn = async (req, res = response) => {
   }
 };
 
-module.exports = { login, googleSignIn };
+const renewToken = (req, res = response) => {
+  const id = req.uid;
+
+  generateJWT(id)
+    .then((token) => {
+      res.json({
+        ok: true,
+        token: token,
+      });
+    })
+    .catch(function (err) {
+      if (err.name == "ValidationError") {
+        res.status(422).json(err.message);
+      } else {
+        res.status(500).json(err.message);
+      }
+    });
+};
+
+module.exports = { login, googleSignIn, renewToken };

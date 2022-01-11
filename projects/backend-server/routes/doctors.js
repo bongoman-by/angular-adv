@@ -33,6 +33,7 @@ router.put(
     check("name", "Name of doctor does not exist or is empty")
       .exists()
       .notEmpty(),
+    check("hospital", "Hospital should be valid mongo id").isMongoId(),
     validFields,
   ],
   updateDoctor

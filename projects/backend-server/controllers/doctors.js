@@ -36,18 +36,33 @@ const updateDoctor = (req, res = response) => {
   const id = req.params["id"];
   const { ...fields } = req.body;
 
-  Doctor.findByIdAndUpdate(id, fields, {
-    new: true,
-    runValidators: true,
-    context: "query",
-  })
-    .then(function (doctor) {
-      console.log("Doctor updated!", doctor);
-      res.json(doctor);
+  Doctor.findById(id)
+    .then((doctorDB) => {
+      if (doctorDB) {
+        const hospitals = doctorDB.hospital;
+        if (!hospitals.includes(fields.hospital)) {
+          hospitals.push(fields.hospital);
+        }
+        fields.hospital = hospitals;
+        Doctor.findByIdAndUpdate(id, fields, {
+          new: true,
+          runValidators: true,
+          context: "query",
+        })
+          .then((doctor) => {
+            res.json({
+              ok: true,
+              msg: `Update doctor ${doctor.name}!`,
+              doctor: doctor,
+            });
+          })
+          .catch((err) => {
+            res.status(500).json(err.message);
+          });
+      }
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.name == "ValidationError") {
-        console.error("Error Validating!", err.message);
         res.status(422).json(err.message);
       } else {
         res.status(500).json(err.message);
@@ -71,7 +86,7 @@ const deleteDoctor = (req, res = response) => {
         res.json({ ok: false, id: id, msg: "Doctor does not exist!" });
       }
     })
-    .catch(function (err) {
+    .catch((err) => {
       res.status(500).json(err.message);
     });
 };
