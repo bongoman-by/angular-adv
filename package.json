@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@types/gapi.auth2": "^0.0.55",
     "bcryptjs": "^2.4.3",
     "chart.js": "^3.7.0",
     "cors": "^2.8.5",
@@ -32,6 +33,7 @@
     "mongoose-unique-validator": "^3.0.0",
     "ng2-charts": "^3.0.5",
     "rxjs": "~7.4.0",
+    "sweetalert2": "^11.3.4",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.11.4"

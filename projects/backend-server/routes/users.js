@@ -16,7 +16,6 @@ router.get("/", [validJWT], getUsers);
 router.post(
   "/",
   [
-    validJWT,
     check("name", "Name is not exist or is empty").exists().notEmpty(),
     check("password").exists().notEmpty(),
     check("email").isEmail(),

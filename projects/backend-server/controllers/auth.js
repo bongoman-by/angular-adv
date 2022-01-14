@@ -13,13 +13,13 @@ const login = (req, res = response) => {
       if (!userDB) {
         return res.status(404).json({
           ok: false,
-          msg: "Email is wrong",
+          msg: "Email is wrong!",
         });
       }
       if (!bcrypt.compareSync(password, userDB.password)) {
         return res.status(404).json({
           ok: false,
-          msg: "Password is wrong",
+          msg: "Password is wrong!",
         });
       }
 
@@ -33,10 +33,16 @@ const login = (req, res = response) => {
     })
     .catch(function (err) {
       if (err.name == "ValidationError") {
-        console.error("Error Validating!", err.message);
-        res.status(422).json(err.message);
+        res.status(422).json({
+          ok: false,
+          msg: err.message,
+        });
+      } else {
+        res.status(500).json({
+          ok: false,
+          msg: err.message,
+        });
       }
-      res.status(500).json(err.message);
     });
 };
 
@@ -59,12 +65,17 @@ const googleSignIn = async (req, res = response) => {
                 res.json({
                   ok: true,
                   msg: `Welcome ${userDB.name}!`,
+                  email: email,
                   token: token,
                 });
               });
             })
             .catch((err) => {
-              res.status(500).json(err.message);
+              res.status(500).json({
+                ok: false,
+                msg: err.message,
+                token: token,
+              });
             });
         } else {
           User.create({
