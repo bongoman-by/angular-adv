@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartListComponent } from './chart-list/chart-list.component';
 import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: 'progress',
         component: ProgressComponent,
         data: { title: 'Progress' },
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { title: 'My Profile' },
       },
       {
         path: 'charts',

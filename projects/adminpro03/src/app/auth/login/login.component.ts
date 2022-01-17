@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private _ngZone: NgZone
   ) {
     this.registerForm = this.fb.group({
       email: [
@@ -45,7 +46,9 @@ export class LoginComponent implements OnInit {
   handleCredentialResponse(response: any) {
     this.userService.googleSignIn(response.credential).subscribe({
       next: () => {
-        this.router.navigateByUrl('/');
+        this._ngZone.run(() => {
+          this.router.navigateByUrl('/');
+        });
       },
       error: (e) => {
         Swal.fire({

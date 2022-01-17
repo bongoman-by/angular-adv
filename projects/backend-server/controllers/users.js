@@ -30,7 +30,7 @@ const addUser = async (req, res = response) => {
 
   // Create a user based on the schema we created:
   await User.create(user)
-    .then(function (userDB) {
+    .then((userDB) => {
       generateJWT(userDB.id).then((token) => {
         res.json({
           ok: true,
@@ -39,37 +39,78 @@ const addUser = async (req, res = response) => {
         });
       });
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.name == "ValidationError") {
         console.error("Error Validating!", err.message);
-        res.status(422).json(err.message);
+        res.status(422).json({
+          ok: false,
+          msg: err.message,
+        });
       } else {
-        res.status(500).json(err.message);
+        res.status(500).json({
+          ok: false,
+          msg: err.message,
+        });
       }
     });
 };
 
 const updateUser = (req, res = response) => {
   const id = req.params["id"];
-  const { password, google, ...fields } = req.body;
-
-  User.findByIdAndUpdate(id, fields, {
-    new: true,
-    runValidators: true,
-    context: "query",
-  })
-    .then(function (user) {
-      console.log("User updated!", user);
-      res.json(user);
-    })
-    .catch(function (err) {
-      if (err.name == "ValidationError") {
-        console.error("Error Validating!", err.message);
-        res.status(422).json(err.message);
-      } else {
-        res.status(500).json(err.message);
+  const { oldPassword, password, google, ...fields } = req.body;
+  let newPassword = "";
+  if (oldPassword.length > 0) {
+    const salt = bcrypt.genSaltSync(10);
+    newPassword = bcrypt.hashSync(password || "", salt);
+  }
+  User.findById(id).then((user) => {
+    if (oldPassword.length > 0) {
+      if (!bcrypt.compareSync(oldPassword, user.password)) {
+        return res.status(404).json({
+          ok: false,
+          msg: "Password is wrong!",
+        });
       }
-    });
+    } else {
+      newPassword = user.password;
+    }
+    if (fields.email !== user.email && user.google) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Can not change google email!",
+      });
+    }
+    User.findByIdAndUpdate(
+      id,
+      { ...fields, password: newPassword },
+      {
+        new: true,
+        runValidators: true,
+        context: "query",
+      }
+    )
+      .then((user) => {
+        res.json({
+          ok: true,
+          msg: `Update ${user.name}!`,
+          user: user,
+        });
+      })
+      .catch((err) => {
+        if (err.name == "ValidationError") {
+          console.error("Error Validating!", err.message);
+          res.status(422).json({
+            ok: false,
+            msg: err.message,
+          });
+        } else {
+          res.status(500).json({
+            ok: false,
+            msg: err.message,
+          });
+        }
+      });
+  });
 };
 
 const deleteUser = (req, res = response) => {
@@ -83,8 +124,11 @@ const deleteUser = (req, res = response) => {
         res.json({ ok: false, id: id, msg: "User no exists!" });
       }
     })
-    .catch(function (err) {
-      res.status(500).json(err.message);
+    .catch((err) => {
+      res.status(500).json({
+        ok: false,
+        msg: err.message,
+      });
     });
 };
 

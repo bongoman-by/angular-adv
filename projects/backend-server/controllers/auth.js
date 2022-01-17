@@ -9,7 +9,7 @@ const login = (req, res = response) => {
   const { email, password } = req.body;
 
   User.findOne({ email })
-    .then(function (userDB) {
+    .then((userDB) => {
       if (!userDB) {
         return res.status(404).json({
           ok: false,
@@ -116,18 +116,34 @@ const googleSignIn = async (req, res = response) => {
 const renewToken = (req, res = response) => {
   const id = req.uid;
 
-  generateJWT(id)
-    .then((token) => {
-      res.json({
-        ok: true,
-        token: token,
-      });
+  User.findById(id)
+    .then((user) => {
+      generateJWT(id)
+        .then((token) => {
+          res.json({
+            ok: true,
+            token,
+            user,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            ok: false,
+            msg: err.message,
+          });
+        });
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.name == "ValidationError") {
-        res.status(422).json(err.message);
+        res.status(422).json({
+          ok: false,
+          msg: err.message,
+        });
       } else {
-        res.status(500).json(err.message);
+        res.status(500).json({
+          ok: false,
+          msg: err.message,
+        });
       }
     });
 };

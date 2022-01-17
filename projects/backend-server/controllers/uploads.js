@@ -52,7 +52,8 @@ const fileUpload = async (req, res = response) => {
     if (actualizeImage(type, id, fileName, appDir)) {
       res.json({
         ok: true,
-        msg: `File ${fileName} is uploaded and add as property!`,
+        msg: "File is uploaded and add as property!",
+        image: fileName,
       });
     }
   });

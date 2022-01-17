@@ -28,9 +28,10 @@ router.put(
   "/:id",
   [
     validJWT,
-    check("name", "Name is not exist or is empty").exists().notEmpty(),
+    check("name", "Name does not exist or is empty").exists().notEmpty(),
+    check("email").exists().isEmail(),
+    check("oldPassword").exists().notEmpty(),
     check("password").exists().notEmpty(),
-    check("email").isEmail(),
     validFields,
   ],
   updateUser
