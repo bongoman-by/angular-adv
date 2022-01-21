@@ -9,6 +9,7 @@ import { ChartListComponent } from './chart-list/chart-list.component';
 import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UsersComponent } from './data/users/users.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
         path: 'account-settings',
         component: AccountSettingsComponent,
         data: { title: 'Settings' },
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+        data: { title: 'Users' },
       },
     ],
   },

@@ -1,0 +1,67 @@
+<div
+  id="responsive-modal-image"
+  class="modal fade"
+  [class.show]="modalImageService.isModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  [ngStyle]="{ display: modalImageService.isModal ? 'block' : 'none' }"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form
+          class="form p-t-20"
+          [formGroup]="fileForm"
+          (ngSubmit)="onSubmitFile()"
+          autocomplete="off"
+        >
+          <div class="form-group">
+            <input
+              type="file"
+              class="form-control"
+              id="inputFile"
+              enctype="multipart/form-data"
+              aria-describedby="fileHelp"
+              formControlName="file"
+              (change)="onFileSelect($event)"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-default waves-effect"
+            data-dismiss="modal"
+            (click)="close()"
+          >
+            Close
+          </button>
+          &nbsp;
+          <button
+            type="submit"
+            class="btn btn-success waves-effect waves-light m-r-10"
+            [disabled]="!fileForm.valid"
+          >
+            Save image
+          </button>
+        </form>
+      </div>
+      <div class="text-center">
+        <div *ngIf="imageData">
+          <img
+            class="img-profile"
+            [src]="imageData"
+            [alt]="fileForm.value.name"
+          />
+        </div>
+        <div *ngIf="!imageData">
+          <img
+            class="img-profile"
+            [src]="modalImageService.img"
+            [alt]="image"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

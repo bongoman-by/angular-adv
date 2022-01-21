@@ -15,6 +15,7 @@ import { User } from '../models/user.model';
 })
 export class UserService {
   public user!: User;
+  public limit: number = +environment.usersLoadLimit;
 
   constructor(private http: HttpClient) {}
 
@@ -42,6 +43,39 @@ export class UserService {
           return true;
         }),
         catchError((err) => of(false))
+      );
+  }
+
+  transformUsers(users: any[]): User[] {
+    return users.map(
+      (user) =>
+        new User(
+          user.name,
+          user.email,
+          '',
+          user.image,
+          user.google,
+          user.role,
+          user.uid
+        )
+    );
+  }
+
+  getUsers(skip: number = 0) {
+    const endPoint = `${environment.base_url}/users`;
+    return this.http
+      .get<{ total: number; users: User[] }>(endPoint, {
+        headers: { 'x-token': this.token },
+        params: {
+          from: skip,
+          limit: this.limit,
+        },
+      })
+      .pipe(
+        map((res) => {
+          const users = this.transformUsers(res.users);
+          return { total: res.total, users };
+        })
       );
   }
 
@@ -79,6 +113,34 @@ export class UserService {
     formData.role = this.user.role || '';
     const endPoint = `${environment.base_url}/users/${this.user.uid || ''}`;
     return this.http.put<any>(endPoint, formData, {
+      headers: { 'x-token': this.token },
+    });
+  }
+
+  deleteUser(uid: string) {
+    if (!this.token) {
+      return of(false);
+    }
+    const endPoint = `${environment.base_url}/users/${uid}`;
+    return this.http.delete<any>(endPoint, {
+      headers: { 'x-token': this.token },
+    });
+  }
+
+  updateRole(user: User) {
+    if (!this.token) {
+      return of(false);
+    }
+    const profileSettings: IProfileSettingsForm = {
+      email: user.email,
+      name: user.name,
+      oldPassword: '',
+      password: '',
+      role: user.role,
+    } as IProfileSettingsForm;
+
+    const endPoint = `${environment.base_url}/users/${user.uid}`;
+    return this.http.put<any>(endPoint, profileSettings, {
       headers: { 'x-token': this.token },
     });
   }

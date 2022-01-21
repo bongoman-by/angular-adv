@@ -29,6 +29,7 @@
               type="text"
               placeholder="Name"
               formControlName="name"
+              autocomplete="off"
             />
             <div *ngIf="checkControl('name')" class="validation">
               <p
@@ -97,6 +98,7 @@
               type="password"
               placeholder="Confirm Password"
               formControlName="confirmPassword"
+              autocomplete="off"
             />
             <div *ngIf="checkControl('confirmPassword')" class="validation">
               <p

@@ -14,6 +14,15 @@ export class SidebarService {
         { title: 'Charts', path: 'charts' },
       ],
     },
+    {
+      title: 'Data',
+      icon: 'mdi mdi-folder-lock-open',
+      submenu: [
+        { title: 'Users', path: 'users' },
+        { title: 'Doctors', path: 'doctors' },
+        { title: 'Hospitals', path: 'hospitals' },
+      ],
+    },
   ];
 
   constructor() {}
