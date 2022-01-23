@@ -50,16 +50,22 @@ const getDocsCollection = async (req, res = response) => {
   }
 
   let model;
+  const regex = new RegExp(condition, "i");
 
   switch (type) {
     case "doctors":
-      model = Doctor;
+      model = Doctor.find({ name: regex })
+        .populate("user", ["name", "image"])
+        .populate("hospital", ["name", "image"]);
       break;
     case "hospitals":
-      model = Hospital;
+      model = Hospital.find({ name: regex }).populate("user", [
+        "name",
+        "image",
+      ]);
       break;
     case "users":
-      model = User;
+      model = User.find({ name: regex });
       break;
     default:
       return res.status(400).json({
@@ -69,10 +75,7 @@ const getDocsCollection = async (req, res = response) => {
       break;
   }
 
-  const regex = new RegExp(condition, "i");
-
   await model
-    .find({ name: regex })
     .then((searchResult) => {
       res.json({
         ok: true,

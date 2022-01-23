@@ -2,7 +2,7 @@ const { response } = require("express");
 const Hospital = require("../models/hospital");
 
 const getHospitals = async (req, res) => {
-  hospitals = await Hospital.find().populate("user", "name");
+  hospitals = await Hospital.find().populate("user", ["name", "image"]);
   res.json({
     ok: true,
     length: hospitals.length,
@@ -58,7 +58,7 @@ const deleteHospital = (req, res = response) => {
 
   Hospital.findByIdAndDelete(id)
     .then((hospital) => {
-      if (Hospital) {
+      if (hospital) {
         res.json({
           ok: true,
           name: Hospital.name,

@@ -1,0 +1,59 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
+import { environment } from '../../environments/environment';
+
+import { Doctor } from '../models/doctor.model';
+import { Collections } from './../shared/collections.enum';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DoctorService {
+  public limit: number = +environment.hospitalsLoadLimit;
+  private url = `${environment.base_url}/${Collections.doctors}`;
+
+  constructor(private http: HttpClient) {}
+
+  get token() {
+    return localStorage.getItem('token') || '';
+  }
+
+  transform(items: any[]): Doctor[] {
+    return items.map(
+      (item) =>
+        new Doctor(item.name, item._id, item.image, item.user, item.hospital)
+    );
+  }
+
+  getItems(skip: number = 0) {
+    return this.http.get<{ length: number; doctors: Doctor[] }>(this.url).pipe(
+      map((res) => {
+        const items = this.transform(res.doctors);
+        return { total: res.length, items };
+      })
+    );
+  }
+
+  getItem(_id: string) {
+    return this.http.get<any>(`${this.url}/${_id}`).pipe(
+      map((res) => {
+        const item = this.transform([res.doctor])[0];
+        return item;
+      })
+    );
+  }
+
+  createItem(formData: { name: string; hospital: string }) {
+    return this.http.post<any>(this.url, formData);
+  }
+
+  updateItem(formData: { name: string; hospital: string }, _id: string) {
+    return this.http.put<any>(`${this.url}/${_id}`, formData);
+  }
+
+  deleteItem(_id: string) {
+    return this.http.delete<any>(`${this.url}/${_id}`);
+  }
+}

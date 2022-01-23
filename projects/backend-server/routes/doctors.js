@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {
   getDoctors,
+  getDoctor,
   addDoctor,
   updateDoctor,
   deleteDoctor,
@@ -12,6 +13,8 @@ const { validJWT } = require("../middlewares/valid-jwt");
 const router = Router();
 
 router.get("/", [validJWT], getDoctors);
+
+router.get("/:id", [validJWT], getDoctor);
 
 router.post(
   "/",

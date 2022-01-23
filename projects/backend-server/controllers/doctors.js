@@ -3,13 +3,38 @@ const Doctor = require("../models/doctor");
 
 const getDoctors = async (req, res) => {
   const doctors = await Doctor.find()
-    .populate("user", "name")
-    .populate("hospital", "name");
+    .populate("user", ["name", "image"])
+    .populate("hospital", ["name", "image"]);
   res.json({
     ok: true,
     length: doctors.length,
     doctors: doctors,
   });
+};
+
+const getDoctor = async (req, res = response) => {
+  const id = req.params["id"];
+
+  await Doctor.findById(id)
+    .populate("user", ["name", "image"])
+    .populate("hospital", ["name", "image"])
+    .then((doctor) => {
+      if (doctor) {
+        res.json({
+          ok: true,
+          doctor,
+          msg: `Doctor ${doctor.name} found!`,
+        });
+      } else {
+        res.json({ ok: false, id: id, msg: "Doctor does not exist!" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        ok: false,
+        msg: err.message,
+      });
+    });
 };
 
 const addDoctor = (req, res = response) => {
@@ -91,4 +116,10 @@ const deleteDoctor = (req, res = response) => {
     });
 };
 
-module.exports = { getDoctors, addDoctor, updateDoctor, deleteDoctor };
+module.exports = {
+  getDoctors,
+  addDoctor,
+  updateDoctor,
+  deleteDoctor,
+  getDoctor,
+};

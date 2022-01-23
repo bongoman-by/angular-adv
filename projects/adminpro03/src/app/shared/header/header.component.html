@@ -317,7 +317,7 @@
             aria-haspopup="true"
             aria-expanded="false"
             ><img
-              src="{{ user.imageUrl }}"
+              src="{{ user.image || '' | image }}"
               alt="{{ user.name }}"
               class="profile-pic"
           /></a>
@@ -326,7 +326,10 @@
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img src="{{ user.imageUrl }}" alt="{{ user.name }}" />
+                    <img
+                      src="{{ user.image || '' | image }}"
+                      alt="{{ user.name }}"
+                    />
                   </div>
                   <div class="u-text">
                     <h4>{{ user.name }}</h4>

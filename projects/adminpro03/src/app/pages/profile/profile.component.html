@@ -137,7 +137,11 @@
           />
         </div>
         <div *ngIf="!imageData">
-          <img class="img-profile" [src]="user.imageUrl" [alt]="user.name" />
+          <img
+            class="img-profile"
+            [src]="user.image || '' | image"
+            [alt]="user.name"
+          />
         </div>
       </div>
     </div>

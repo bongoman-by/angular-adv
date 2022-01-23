@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from './../components/components.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartListComponent } from './chart-list/chart-list.component';
@@ -13,6 +14,9 @@ import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './data/users/users.component';
+import { HospitalsComponent } from './data/hospitals/hospitals.component';
+import { DoctorsComponent } from './data/doctors/doctors.component';
+import { DoctorComponent } from './data/doctor/doctor.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +27,9 @@ import { UsersComponent } from './data/users/users.component';
     AccountSettingsComponent,
     ProfileComponent,
     UsersComponent,
+    HospitalsComponent,
+    DoctorsComponent,
+    DoctorComponent,
   ],
   imports: [
     SharedModule,
@@ -31,6 +38,7 @@ import { UsersComponent } from './data/users/users.component';
     ReactiveFormsModule,
     ComponentsModule,
     CommonModule,
+    PipesModule,
   ],
   exports: [
     DashboardComponent,

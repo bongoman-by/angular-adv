@@ -12,10 +12,10 @@
             class="has-arrow waves-effect waves-dark"
             href="#"
             aria-expanded="false"
-            ><img src="{{ user.imageUrl }}" alt="{{ user.name }}" /><span
-              class="hide-menu"
-              >{{ user.name }}
-            </span></a
+            ><img
+              src="{{ user.image || '' | image }}"
+              alt="{{ user.name }}"
+            /><span class="hide-menu">{{ user.name }} </span></a
           >
           <ul aria-expanded="false" class="collapse">
             <li>

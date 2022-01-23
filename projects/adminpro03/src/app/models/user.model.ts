@@ -1,5 +1,3 @@
-import { environment } from '../../environments/environment';
-
 export class User {
   constructor(
     public name: string,
@@ -10,16 +8,4 @@ export class User {
     public role?: string,
     public uid?: string
   ) {}
-
-  get imageUrl() {
-    if (this.google) {
-      return this.image;
-    } else {
-      if (this.image) {
-        return `${environment.base_url}/upload/users/${this.image}`;
-      } else {
-        return `${environment.base_url}/upload/users/image-not-found.png`;
-      }
-    }
-  }
 }
