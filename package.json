@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start:dev": "nodemon projects/backend-server/index.js"
+    "start:dev": "nodemon projects/backend-server/index.js",
+    "start:heroku": "node projects/backend-server/index.js"
   },
   "private": true,
   "dependencies": {
