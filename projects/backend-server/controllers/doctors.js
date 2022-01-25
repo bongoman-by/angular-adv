@@ -2,13 +2,21 @@ const { response } = require("express");
 const Doctor = require("../models/doctor");
 
 const getDoctors = async (req, res) => {
-  const doctors = await Doctor.find()
-    .populate("user", ["name", "image"])
-    .populate("hospital", ["name", "image"]);
+  const from = +req.query.from || 0;
+  const limit = +req.query.limit || 3;
+  const [doctors, total] = await Promise.all([
+    Doctor.find()
+      .populate("user", ["name", "image"])
+      .populate("hospital", ["name", "image"])
+      .skip(from)
+      .limit(limit),
+    Doctor.count(),
+  ]);
   res.json({
     ok: true,
     length: doctors.length,
-    doctors: doctors,
+    doctors,
+    total,
   });
 };
 

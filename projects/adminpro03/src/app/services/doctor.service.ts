@@ -11,7 +11,7 @@ import { Collections } from './../shared/collections.enum';
   providedIn: 'root',
 })
 export class DoctorService {
-  public limit: number = +environment.hospitalsLoadLimit;
+  public limit: number = +environment.doctorsLoadLimit;
   private url = `${environment.base_url}/${Collections.doctors}`;
 
   constructor(private http: HttpClient) {}
@@ -28,12 +28,19 @@ export class DoctorService {
   }
 
   getItems(skip: number = 0) {
-    return this.http.get<{ length: number; doctors: Doctor[] }>(this.url).pipe(
-      map((res) => {
-        const items = this.transform(res.doctors);
-        return { total: res.length, items };
+    return this.http
+      .get<{ length: number; total: number; doctors: Doctor[] }>(this.url, {
+        params: {
+          from: skip,
+          limit: this.limit,
+        },
       })
-    );
+      .pipe(
+        map((res) => {
+          const items = this.transform(res.doctors);
+          return { length: res.length, total: res.total, items };
+        })
+      );
   }
 
   getItem(_id: string) {

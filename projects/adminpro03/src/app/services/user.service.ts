@@ -78,7 +78,6 @@ export class UserService {
     const endPoint = `${environment.base_url}/users`;
     return this.http
       .get<{ total: number; users: User[] }>(endPoint, {
-        headers: { 'x-token': this.token },
         params: {
           from: skip,
           limit: this.limit,
@@ -125,9 +124,7 @@ export class UserService {
     }
     formData.role = this.user.role || '';
     const endPoint = `${environment.base_url}/users/${this.user.uid || ''}`;
-    return this.http.put<any>(endPoint, formData, {
-      headers: { 'x-token': this.token },
-    });
+    return this.http.put<any>(endPoint, formData);
   }
 
   deleteUser(uid: string) {
@@ -153,9 +150,7 @@ export class UserService {
     } as IProfileSettingsForm;
 
     const endPoint = `${environment.base_url}/users/${user.uid}`;
-    return this.http.put<any>(endPoint, profileSettings, {
-      headers: { 'x-token': this.token },
-    });
+    return this.http.put<any>(endPoint, profileSettings);
   }
 
   logout() {

@@ -28,11 +28,16 @@ export class HospitalService {
 
   getItems(skip: number = 0) {
     return this.http
-      .get<{ length: number; hospitals: Hospital[] }>(this.url)
+      .get<{ length: number; total: number; hospitals: Hospital[] }>(this.url, {
+        params: {
+          from: skip,
+          limit: this.limit,
+        },
+      })
       .pipe(
         map((res) => {
           const items = this.transform(res.hospitals);
-          return { total: res.length, items };
+          return { length: res.length, total: res.total, items };
         })
       );
   }
