@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start:dev": "nodemon projects/backend-server/index.js",
-    "start:heroku": "node projects/backend-server/index.js"
+    "start": "node projects/backend-server/index.js"
   },
   "private": true,
   "dependencies": {
