@@ -7,7 +7,7 @@ const {
 } = require("../controllers/users");
 const { check } = require("express-validator");
 const { validFields } = require("../middlewares/valid-fields");
-const { validJWT } = require("../middlewares/valid-jwt");
+const { validJWT, validADMIN_ROLE } = require("../middlewares/valid-jwt");
 
 const router = Router();
 
@@ -28,6 +28,7 @@ router.put(
   "/:id",
   [
     validJWT,
+    validADMIN_ROLE,
     check("name", "Name does not exist or is empty").exists().notEmpty(),
     check("email").exists().isEmail(),
     check("oldPassword").exists().notEmpty(),
@@ -37,6 +38,6 @@ router.put(
   updateUser
 );
 
-router.delete("/:id", [validJWT], deleteUser);
+router.delete("/:id", [validJWT, validADMIN_ROLE], deleteUser);
 
 module.exports = router;

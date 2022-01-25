@@ -1,0 +1,122 @@
+<div *ngIf="!loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Loading...</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Wait please</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loaded" class="row animated fadeIn fast">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Users</h3>
+        <div *ngIf="users.length === 0" class="alert alert-info text-center">
+          <p class mb-0>Oops! There are not users in search :-(</p>
+        </div>
+        <div *ngIf="users.length > 0" class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="w100">Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of users; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td class="text-center">
+                  <img
+                    [src]="item.image || '' | image"
+                    alt="{{ item.name }}"
+                    class="avatar"
+                  />
+                </td>
+
+                <td>{{ item.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Doctors</h3>
+        <div *ngIf="doctors.length === 0" class="alert alert-info text-center">
+          <p class mb-0>Oops! There are not doctors in search :-(</p>
+        </div>
+        <div *ngIf="doctors.length > 0" class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="w100">Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of doctors; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td class="text-center">
+                  <img
+                    [src]="item.image || '' | image: collectionDoctors"
+                    alt="{{ item.name }}"
+                    class="avatar"
+                  />
+                </td>
+
+                <td>{{ item.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Hospitals</h3>
+        <div
+          *ngIf="hospitals.length === 0"
+          class="alert alert-info text-center"
+        >
+          <p class mb-0>Oops! There are not hospitals in search :-(</p>
+        </div>
+        <div *ngIf="hospitals.length > 0" class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="w100">Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of hospitals; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td class="text-center">
+                  <img
+                    [src]="item.image || '' | image: collectionHospitals"
+                    alt="{{ item.name }}"
+                    class="w100"
+                  />
+                </td>
+
+                <td>{{ item.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

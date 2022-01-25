@@ -33,7 +33,7 @@ export class DoctorComponent implements OnInit {
     private doctorService: DoctorService,
     private hospitalService: HospitalService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private route: ActivatedRoute
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -47,7 +47,7 @@ export class DoctorComponent implements OnInit {
         this.hospitals.filter((hospital) => hospital._id === _id)[0].image ||
         '';
     });
-    this.activatedRoute.params.subscribe(({ id }) => {
+    this.route.params.subscribe(({ id }) => {
       if (id === 'new') {
         return;
       }

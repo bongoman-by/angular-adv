@@ -18,15 +18,15 @@ const search = async (req, res = response) => {
 
   await Promise.all([
     User.find({ name: regex }),
-    Hospital.find({ name: regex }),
     Doctor.find({ name: regex }),
+    Hospital.find({ name: regex }),
   ])
-    .then((users, hospitals, doctors) => {
+    .then(([users, doctors, hospitals]) => {
       res.json({
         ok: true,
-        users: users,
-        hospitals: hospitals,
-        doctors: doctors,
+        users,
+        doctors,
+        hospitals,
       });
     })
     .catch(function (err) {

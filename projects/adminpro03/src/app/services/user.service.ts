@@ -5,6 +5,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
+import { SidebarService } from './sidebar.service';
+
 import { IRegisterForm } from '../interfaces/register-form.interface';
 import { ILoginForm } from '../interfaces/login-form.interface';
 import { IProfileSettingsForm } from '../interfaces/profile-settings-form.interface';
@@ -17,12 +19,23 @@ export class UserService {
   public user!: User;
   public limit: number = +environment.usersLoadLimit;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private sidebarService: SidebarService
+  ) {}
+
+  saveResult(res: any) {
+    localStorage.setItem('token', res.token);
+    this.sidebarService.setMenu(res.menu);
+  }
 
   get token() {
     return localStorage.getItem('token') || '';
   }
 
+  get role() {
+    return this.user.role;
+  }
   setUser(user: any) {
     const { name, email, image, google, role, uid } = user;
     this.user = new User(name, email, '', image, google, role, uid);
@@ -39,7 +52,7 @@ export class UserService {
       .pipe(
         map((res) => {
           this.setUser(res.user);
-          localStorage.setItem('token', res.token);
+          this.saveResult(res);
           return true;
         }),
         catchError((err) => of(false))
@@ -83,7 +96,7 @@ export class UserService {
     const endPoint = `${environment.base_url}/users`;
     return this.http.post<any>(endPoint, formData).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
+        this.saveResult(res);
       })
     );
   }
@@ -92,7 +105,7 @@ export class UserService {
     const endPoint = `${environment.base_url}/login`;
     return this.http.post<any>(endPoint, formData).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
+        this.saveResult(res);
       })
     );
   }
@@ -101,7 +114,7 @@ export class UserService {
     const endPoint = `${environment.base_url}/login/google`;
     return this.http.post<any>(endPoint, { token }).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
+        this.saveResult(res);
       })
     );
   }

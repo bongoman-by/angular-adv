@@ -17,6 +17,7 @@ import { UsersComponent } from './data/users/users.component';
 import { HospitalsComponent } from './data/hospitals/hospitals.component';
 import { DoctorsComponent } from './data/doctors/doctors.component';
 import { DoctorComponent } from './data/doctor/doctor.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { DoctorComponent } from './data/doctor/doctor.component';
     HospitalsComponent,
     DoctorsComponent,
     DoctorComponent,
+    SearchComponent,
   ],
   imports: [
     SharedModule,

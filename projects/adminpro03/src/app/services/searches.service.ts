@@ -11,25 +11,17 @@ import { Collections } from '../shared/collections.enum';
 export class SearchesService {
   constructor(private http: HttpClient) {}
 
-  get token() {
-    return localStorage.getItem('token') || '';
-  }
-
-  get headers() {
-    return { headers: { 'x-token': this.token } };
-  }
-
   getCollection(type: Collections, term: string) {
-    const endPoint = `${environment.base_url}/search/collection/${type}/${term}`;
-
     return this.http
-      .get<any[]>(endPoint, {
-        headers: { 'x-token': this.token },
-      })
+      .get<any[]>(`${environment.base_url}/search/collection/${type}/${term}`)
       .pipe(
         map((res: any) => {
           return res.searchResult;
         })
       );
+  }
+
+  getAll(term: string) {
+    return this.http.get<any>(`${environment.base_url}/search/${term}`);
   }
 }

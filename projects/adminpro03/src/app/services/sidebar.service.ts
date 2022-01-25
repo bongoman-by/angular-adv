@@ -4,30 +4,15 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SidebarService {
-  private menu = [
-    {
-      title: 'Dashboards',
-      icon: 'mdi mdi-gauge',
-      submenu: [
-        { title: 'Main', path: '/' },
-        { title: 'Progress', path: 'progress' },
-        { title: 'Charts', path: 'charts' },
-      ],
-    },
-    {
-      title: 'Data',
-      icon: 'mdi mdi-folder-lock-open',
-      submenu: [
-        { title: 'Users', path: 'users' },
-        { title: 'Doctors', path: 'doctors' },
-        { title: 'Hospitals', path: 'hospitals' },
-      ],
-    },
-  ];
+  private _menu: any[] = [];
 
   constructor() {}
 
   get getMenu() {
-    return this.menu;
+    return this._menu;
+  }
+
+  public setMenu(menu: any[]) {
+    this._menu = menu;
   }
 }
