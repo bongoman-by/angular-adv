@@ -19,6 +19,10 @@
 /node_modules
 
 #image files
+/projects/backend-server/uploads/doctors/*.*
+/projects/backend-server/uploads/hospitals/*.*
+/projects/backend-server/uploads/users/*.*
+
 
 # profiling files
 chrome-profiler-events*.json
