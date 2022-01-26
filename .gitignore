@@ -2,6 +2,7 @@
 
 #envienronment
 /.env
+/projects/backend-server/public/**/*.*
 
 # study
 /projects/clitest01
@@ -18,17 +19,11 @@
 /node_modules
 
 #image files
-/projects/backend-server/uploads/doctors/*.jpg
-/projects/backend-server/uploads/doctors/*.png
-/projects/backend-server/uploads/doctors/*.gif
+/projects/backend-server/uploads/**/*.*
 
-/projects/backend-server/uploads/hospitals/*.jpg
-/projects/backend-server/uploads/hospitals/*.png
-/projects/backend-server/uploads/hospitals/*.gif
-
-/projects/backend-server/uploads/users/*.jpg
-/projects/backend-server/uploads/users/*.png
-/projects/backend-server/uploads/users/*.gif
+!/projects/backend-server/uploads/doctors/
+!/projects/backend-server/uploads/hospitals/
+!/projects/backend-server/uploads/users/
 
 # profiling files
 chrome-profiler-events*.json
