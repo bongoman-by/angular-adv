@@ -36,19 +36,17 @@ export class SearchComponent implements OnInit {
       this.loaded = false;
       this.searchesService.getAll(term).subscribe({
         next: (res: any) => {
-          console.log(res);
+          if (res) {
+            this.users = res.users;
+            this.doctors = res.doctors;
+            this.hospitals = res.hospitals;
+          } else {
+            this.users = [];
+            this.doctors = [];
+            this.hospitals = [];
+          }
 
-          this.users = res.users;
-          this.doctors = res.doctors;
-          this.hospitals = res.hospitals;
           this.loaded = true;
-        },
-        error: (e) => {
-          Swal.fire({
-            title: 'Error!',
-            text: e.error.msg || e.message,
-            icon: 'error',
-          });
         },
       });
     });

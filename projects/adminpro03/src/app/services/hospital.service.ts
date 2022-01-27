@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
 import { Hospital } from '../models/hospital.model';
 import { Collections } from './../shared/collections.enum';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,9 @@ export class HospitalService {
         map((res) => {
           const items = this.transform(res.hospitals);
           return { length: res.length, total: res.total, items };
+        }),
+        catchError(() => {
+          return of({ length: 0, total: 0, items: null });
         })
       );
   }

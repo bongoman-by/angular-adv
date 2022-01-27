@@ -24,11 +24,11 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      name: ['bongoman', Validators.required],
-      email: ['bongoman@mail.ru', [Validators.email, Validators.required]],
-      password: ['7691989', [Validators.required, Validators.minLength(6)]],
+      name: ['', Validators.required],
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: [
-        '7691989',
+        '',
         [Validators.required, Validators.minLength(6), this.checkPassword],
       ],
       terms: [true, this.checkTerms],
@@ -81,15 +81,8 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    this.userService.createUser(this.registerForm.value).subscribe({
+    this.userService.createItem(this.registerForm.value).subscribe({
       next: () => this.router.navigateByUrl('/'),
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error,
-          icon: 'error',
-        });
-      },
     });
   }
 }

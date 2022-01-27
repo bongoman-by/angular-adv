@@ -73,14 +73,11 @@ export class DoctorComponent implements OnInit {
   loadHospitals() {
     this.hospitalService.getItems().subscribe({
       next: ({ total, items }) => {
-        this.hospitals = items;
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
+        if (items) {
+          this.hospitals = items;
+        } else {
+          this.hospitals = [];
+        }
       },
     });
   }
@@ -96,13 +93,6 @@ export class DoctorComponent implements OnInit {
           });
           this.router.navigateByUrl(`/dashboard/doctor/${res.doctor._id}`);
         },
-        error: (e) => {
-          Swal.fire({
-            title: 'Error!',
-            text: e.error.msg || e.message,
-            icon: 'error',
-          });
-        },
       });
     } else {
       this.doctorService
@@ -116,13 +106,6 @@ export class DoctorComponent implements OnInit {
             });
             this.router.navigateByUrl(`/dashboard/doctor/${res.doctor._id}`);
             this.ngOnInit();
-          },
-          error: (e) => {
-            Swal.fire({
-              title: 'Error!',
-              text: e.error.msg || e.message,
-              icon: 'error',
-            });
           },
         });
     }

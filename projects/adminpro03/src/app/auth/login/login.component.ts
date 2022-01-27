@@ -99,15 +99,6 @@ export class LoginComponent implements OnInit {
         }
         this.router.navigateByUrl('/');
       },
-      error: (e) => {
-        console.log(e);
-
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
-      },
     });
   }
 

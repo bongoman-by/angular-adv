@@ -16,7 +16,7 @@ import { Collections } from '../../../shared/collections.enum';
   styles: [],
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  public users: User[] = [];
+  public items: User[] = [];
   public total: number = 0;
   public from: number = 0;
   public loaded: boolean = true;
@@ -32,7 +32,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.sub = this.modalImageService.loadedImage
       .pipe(delay(1000))
       .subscribe(() => {
-        this.loadUsers();
+        this.loadItems();
       });
   }
   ngOnDestroy(): void {
@@ -40,7 +40,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadItems();
   }
 
   back() {
@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (this.from < 0) {
       this.from = 0;
     }
-    this.loadUsers();
+    this.loadItems();
   }
 
   next() {
@@ -56,53 +56,48 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (this.from > this.total) {
       this.from = this.total;
     }
-    this.loadUsers();
+    this.loadItems();
   }
 
-  loadUsers() {
+  loadItems() {
     this.loaded = false;
-    this.userService.getUsers(this.from).subscribe({
-      next: ({ total, users }) => {
+    this.userService.getItems(this.from).subscribe({
+      next: ({ total, items }) => {
+        if (items) {
+          this.items = this.userService.transform(items);
+        } else {
+          this.items = [];
+        }
         this.total = total;
-        this.users = this.userService.transformUsers(users);
+
         this.loaded = true;
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
       },
     });
   }
 
   search(term: string) {
     if (!term) {
-      return this.loadUsers();
+      return this.loadItems();
     }
     this.loaded = false;
     this.searchesService.getCollection(Collections.users, term).subscribe({
-      next: (users: any) => {
-        this.users = this.userService.transformUsers(users);
-        this.total = this.users.length;
+      next: (items: any) => {
+        if (items) {
+          this.items = this.userService.transform(items);
+        } else {
+          this.items = [];
+        }
+        this.total = this.items.length;
         this.loaded = true;
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
       },
     });
   }
 
-  deleteUser(user: User, term: string) {
-    const id = user.uid || '';
+  deleteItem(item: User, term: string) {
+    const id = item.uid || '';
     Swal.fire({
       title: 'Delete user?',
-      text: `You are going to delete ${user.name}!`,
+      text: `You are going to delete ${item.name}!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -110,22 +105,15 @@ export class UsersComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.deleteUser(id).subscribe({
+        this.userService.deleteItem(id).subscribe({
           next: () => {
             Swal.fire('Deleted!', 'User has been deleted.', 'success');
             if (!term) {
-              this.loadUsers();
+              this.loadItems();
             }
             {
               this.search(term);
             }
-          },
-          error: (e) => {
-            Swal.fire({
-              title: 'Error!',
-              text: e.error.msg || e.message,
-              icon: 'error',
-            });
           },
         });
       }
@@ -143,13 +131,6 @@ export class UsersComponent implements OnInit, OnDestroy {
           title: '',
           text: res.msg,
           icon: 'success',
-        });
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
         });
       },
     });

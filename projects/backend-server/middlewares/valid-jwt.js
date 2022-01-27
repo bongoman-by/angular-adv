@@ -5,7 +5,7 @@ const User = require("../models/user");
 const validJWT = async (req = request, res = response, next) => {
   const token = req.get("x-token");
   if (!token) {
-    return res.json({
+    return res.status(401).json({
       ok: false,
       msg: "Token does not exist!",
     });

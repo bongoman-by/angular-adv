@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Collections } from '../shared/collections.enum';
@@ -17,11 +18,18 @@ export class SearchesService {
       .pipe(
         map((res: any) => {
           return res.searchResult;
+        }),
+        catchError(() => {
+          return of(null);
         })
       );
   }
 
   getAll(term: string) {
-    return this.http.get<any>(`${environment.base_url}/search/${term}`);
+    return this.http.get<any>(`${environment.base_url}/search/${term}`).pipe(
+      catchError(() => {
+        return of(null);
+      })
+    );
   }
 }

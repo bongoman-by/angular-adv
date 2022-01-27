@@ -62,16 +62,13 @@ export class HospitalsComponent implements OnInit, OnDestroy {
     this.loaded = false;
     this.hospitalService.getItems(this.from).subscribe({
       next: ({ total, items }) => {
-        this.items = items;
+        if (items) {
+          this.items = items;
+        } else {
+          this.items = [];
+        }
         this.total = total;
         this.loaded = true;
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
       },
     });
   }
@@ -83,16 +80,13 @@ export class HospitalsComponent implements OnInit, OnDestroy {
     this.loaded = false;
     this.searchesService.getCollection(this.collection, term).subscribe({
       next: (items: any) => {
-        this.items = this.hospitalService.transform(items);
+        if (items) {
+          this.items = this.hospitalService.transform(items);
+        } else {
+          this.items = [];
+        }
         this.total = this.items.length;
         this.loaded = true;
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg || e.message,
-          icon: 'error',
-        });
       },
     });
   }
@@ -110,13 +104,6 @@ export class HospitalsComponent implements OnInit, OnDestroy {
             icon: 'success',
           });
           this.search(name);
-        },
-        error: (e) => {
-          Swal.fire({
-            title: 'Error!',
-            text: e.error.msg || e.message,
-            icon: 'error',
-          });
         },
       });
   }
@@ -143,13 +130,6 @@ export class HospitalsComponent implements OnInit, OnDestroy {
               this.search(term);
             }
           },
-          error: (e) => {
-            Swal.fire({
-              title: 'Error!',
-              text: e.error.msg || e.message,
-              icon: 'error',
-            });
-          },
         });
       }
     });
@@ -170,13 +150,6 @@ export class HospitalsComponent implements OnInit, OnDestroy {
             title: '',
             text: res.msg,
             icon: 'success',
-          });
-        },
-        error: (e) => {
-          Swal.fire({
-            title: 'Error!',
-            text: e.error.msg || e.message,
-            icon: 'error',
           });
         },
       });

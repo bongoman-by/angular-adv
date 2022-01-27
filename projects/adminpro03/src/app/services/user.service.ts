@@ -11,6 +11,7 @@ import { IRegisterForm } from '../interfaces/register-form.interface';
 import { ILoginForm } from '../interfaces/login-form.interface';
 import { IProfileSettingsForm } from '../interfaces/profile-settings-form.interface';
 import { User } from '../models/user.model';
+import { Collections } from '../shared/collections.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ import { User } from '../models/user.model';
 export class UserService {
   public user!: User;
   public limit: number = +environment.usersLoadLimit;
+  private url = `${environment.base_url}/${Collections.users}`;
 
   constructor(
     private http: HttpClient,
@@ -29,55 +31,46 @@ export class UserService {
     this.sidebarService.setMenu(res.menu);
   }
 
-  get token() {
-    return localStorage.getItem('token') || '';
-  }
-
   get role() {
     return this.user.role;
   }
+
   setUser(user: any) {
     const { name, email, image, google, role, uid } = user;
     this.user = new User(name, email, '', image, google, role, uid);
   }
 
   checkToken(): Observable<boolean> {
-    if (!this.token) {
-      return of(false);
-    }
-
     const endPoint = `${environment.base_url}/login/renew`;
-    return this.http
-      .get<any>(endPoint, { headers: { 'x-token': this.token } })
-      .pipe(
-        map((res) => {
-          this.setUser(res.user);
-          this.saveResult(res);
-          return true;
-        }),
-        catchError((err) => of(false))
-      );
+    return this.http.get<any>(endPoint).pipe(
+      map((res) => {
+        this.setUser(res.user);
+        this.saveResult(res);
+        return true;
+      }),
+      catchError((err) => of(false))
+    );
   }
 
-  transformUsers(users: any[]): User[] {
-    return users.map(
-      (user) =>
+  transform(items: any[]): User[] {
+    return items.map(
+      (item) =>
         new User(
-          user.name,
-          user.email,
+          item.name,
+          item.email,
           '',
-          user.image,
-          user.google,
-          user.role,
-          user.uid
+          item.image,
+          item.google,
+          item.role,
+          item.uid
         )
     );
   }
 
-  getUsers(skip: number = 0) {
+  getItems(skip: number = 0) {
     const endPoint = `${environment.base_url}/users`;
     return this.http
-      .get<{ total: number; users: User[] }>(endPoint, {
+      .get<{ total: number; users: User[] }>(this.url, {
         params: {
           from: skip,
           limit: this.limit,
@@ -85,24 +78,17 @@ export class UserService {
       })
       .pipe(
         map((res) => {
-          const users = this.transformUsers(res.users);
-          return { total: res.total, users };
+          const items = this.transform(res.users);
+          return { total: res.total, items };
+        }),
+        catchError(() => {
+          return of({ total: 0, items: null });
         })
       );
   }
 
-  createUser(formData: IRegisterForm) {
-    const endPoint = `${environment.base_url}/users`;
-    return this.http.post<any>(endPoint, formData).pipe(
-      tap((res) => {
-        this.saveResult(res);
-      })
-    );
-  }
-
   login(formData: ILoginForm) {
-    const endPoint = `${environment.base_url}/login`;
-    return this.http.post<any>(endPoint, formData).pipe(
+    return this.http.post<any>(`${environment.base_url}/login`, formData).pipe(
       tap((res) => {
         this.saveResult(res);
       })
@@ -110,37 +96,16 @@ export class UserService {
   }
 
   googleSignIn(token: string) {
-    const endPoint = `${environment.base_url}/login/google`;
-    return this.http.post<any>(endPoint, { token }).pipe(
-      tap((res) => {
-        this.saveResult(res);
-      })
-    );
-  }
-
-  updateUser(formData: IProfileSettingsForm) {
-    if (!this.token) {
-      return of(false);
-    }
-    formData.role = this.user.role || '';
-    const endPoint = `${environment.base_url}/users/${this.user.uid || ''}`;
-    return this.http.put<any>(endPoint, formData);
-  }
-
-  deleteUser(uid: string) {
-    if (!this.token) {
-      return of(false);
-    }
-    const endPoint = `${environment.base_url}/users/${uid}`;
-    return this.http.delete<any>(endPoint, {
-      headers: { 'x-token': this.token },
-    });
+    return this.http
+      .post<any>(`${environment.base_url}/login/google`, { token })
+      .pipe(
+        tap((res) => {
+          this.saveResult(res);
+        })
+      );
   }
 
   updateRole(user: User) {
-    if (!this.token) {
-      return of(false);
-    }
     const profileSettings: IProfileSettingsForm = {
       email: user.email,
       name: user.name,
@@ -148,12 +113,26 @@ export class UserService {
       password: '',
       role: user.role,
     } as IProfileSettingsForm;
-
-    const endPoint = `${environment.base_url}/users/${user.uid}`;
-    return this.http.put<any>(endPoint, profileSettings);
+    return this.http.put<any>(`${this.url}/${user.uid}`, profileSettings);
   }
 
   logout() {
     localStorage.removeItem('token');
+  }
+  createItem(formData: IRegisterForm) {
+    return this.http.post<any>(this.url, formData).pipe(
+      tap((res) => {
+        this.saveResult(res);
+      })
+    );
+  }
+
+  updateItem(formData: IProfileSettingsForm) {
+    formData.role = this.user.role || '';
+    return this.http.put<any>(`${this.url}/${this.user.uid || ''}`, formData);
+  }
+
+  deleteItem(uid: string) {
+    return this.http.delete<any>(`${this.url}/${uid}`);
   }
 }

@@ -8,8 +8,8 @@ const search = async (req, res = response) => {
   const condition = req.params.condition || "";
 
   if (condition.length === 0) {
-    return res.json({
-      ok: true,
+    return res.status(406).json({
+      ok: false,
       msg: "Condition of search does not exist!",
     });
   }

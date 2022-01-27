@@ -42,23 +42,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let user of users">
+              <tr *ngFor="let item of items">
                 <td class="text-center">
                   <img
-                    [src]="user.image || '' | image"
+                    [src]="item.image || '' | image"
                     alt="Avatar de user"
                     class="avatar cursor"
-                    (click)="openModal(user)"
+                    (click)="openModal(item)"
                   />
                 </td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.name }}</td>
 
                 <td>
                   <select
                     class="form-control"
-                    [(ngModel)]="user.role"
-                    (change)="changeRole(user)"
+                    [(ngModel)]="item.role"
+                    (change)="changeRole(item)"
                   >
                     <option value="ADMIN_ROLE">Admin</option>
                     <option value="USER_ROLE">User</option>
@@ -75,12 +75,12 @@
                 </td>
 
                 <td class="text-nowrap text-center">
-                  <div *ngIf="isCurrentUser(user)">
+                  <div *ngIf="isCurrentUser(item)">
                     <a
                       data-toggle="tooltip"
                       data-original-title="Delete"
                       class="cursor"
-                      (click)="deleteUser(user, txtTerm.value)"
+                      (click)="deleteItem(item, txtTerm.value)"
                     >
                       <i class="fa fa-trash text-danger"></i>
                     </a>

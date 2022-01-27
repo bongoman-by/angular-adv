@@ -103,7 +103,7 @@ export class ProfileComponent {
   }
 
   onSubmitSettings() {
-    this.userService.updateUser(this.settingsForm.value).subscribe({
+    this.userService.updateItem(this.settingsForm.value).subscribe({
       next: (res) => {
         this.user.name = res.user.name;
         this.user.email = res.user.email;
@@ -111,13 +111,6 @@ export class ProfileComponent {
           title: '',
           text: res.msg,
           icon: 'success',
-        });
-      },
-      error: (e) => {
-        Swal.fire({
-          title: 'Error!',
-          text: e.error.msg,
-          icon: 'error',
         });
       },
     });
