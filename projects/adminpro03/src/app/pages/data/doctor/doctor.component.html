@@ -1,0 +1,115 @@
+<div *ngIf="!loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Loading...</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Wait please</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loaded" class="row animated fadeIn fast">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">
+          {{ doctor.name ? "Change doctor" : "New doctor" }}
+        </h4>
+        <div>
+          <img
+            class="img-profile w140"
+            [src]="imageDoctor | image: collectionDoctors"
+            alt="doctor"
+          />
+        </div>
+        <form
+          class="form p-t-20"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+          autocomplete="off"
+        >
+          <div class="form-group">
+            <label for="inputName">Name</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input
+                type="text"
+                class="form-control"
+                id="inputName"
+                placeholder="Enter doctor's name"
+                formControlName="name"
+              />
+            </div>
+          </div>
+          <div *ngIf="hospitalsDoctor" class="form-group">
+            <div>
+              <h4 class="card-title">
+                Hospitals of doctor: {{ hospitalsDoctor.length }}
+              </h4>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr *ngFor="let item of hospitalsDoctor">
+                    <td class="text-center">
+                      <img
+                        [src]="item.image || '' | image: collectionHospitals"
+                        alt="{{ item.name }}"
+                        class="avatar cursor"
+                      />
+                    </td>
+                    <td>{{ item.name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="InputHospital">Hospital</label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-hospital-o"></i>
+              </div>
+              <select
+                type="email"
+                class="form-control"
+                id="InputHospital"
+                formControlName="hospital"
+              >
+                <option value="">Choose hospital</option>
+                <option
+                  *ngFor="let hospital of hospitals"
+                  [value]="hospital._id"
+                >
+                  {{ hospital.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-success waves-effect waves-light m-r-10"
+            [disabled]="this.form.invalid"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 animated fadeIn fast">
+    <div class="card">
+      <div class="card-body text-center">
+        <h4 class="card-title">Photo of selected hospital</h4>
+        <div>
+          <img
+            class="img-profile"
+            [src]="imageHospital | image: collectionHospitals"
+            alt="hospital"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

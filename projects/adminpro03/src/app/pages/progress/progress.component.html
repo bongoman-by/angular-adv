@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Striped Progress bar</h4>
+        <div
+          *ngFor="let progressBar of progressBarState"
+          class="progress m-t-20"
+        >
+          <div
+            class="progress-bar progress-bar-striped active"
+            [ngClass]="progressBar.classBg"
+            style="height: 10px"
+            [style.width]="progressBar.progressByString"
+            role="progressbar"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div *ngFor="let progressBar of progressBarState" class="col-6">
+    <div class="card">
+      <div class="card-body"></div>
+      <app-increasing [progressBar]="progressBar"></app-increasing>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Find user..."
+          (keyup)="search(txtTerm.value)"
+          #txtTerm
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Loading...</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Wait please</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Total count of users: {{ total }}</h4>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Avatar</th>
+                <th>User email</th>
+                <th>User name</th>
+                <th class="w140">Role</th>
+                <th class="w100">Auth</th>
+                <th class="text-nowrap w100">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td class="text-center">
+                  <img
+                    [src]="item.image || '' | image"
+                    alt="Avatar de user"
+                    class="avatar cursor"
+                    (click)="openModal(item)"
+                  />
+                </td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.name }}</td>
+
+                <td>
+                  <select
+                    class="form-control"
+                    [(ngModel)]="item.role"
+                    (change)="changeRole(item)"
+                  >
+                    <option value="ADMIN_ROLE">Admin</option>
+                    <option value="USER_ROLE">User</option>
+                  </select>
+                </td>
+
+                <td>
+                  <span *ngIf="user.google" class="label label-danger"
+                    >Google</span
+                  >
+                  <span *ngIf="!user.google" class="label label-info"
+                    >Email</span
+                  >
+                </td>
+
+                <td class="text-nowrap text-center">
+                  <div *ngIf="isCurrentUser(item)">
+                    <a
+                      data-toggle="tooltip"
+                      data-original-title="Delete"
+                      class="cursor"
+                      (click)="deleteItem(item, txtTerm.value)"
+                    >
+                      <i class="fa fa-trash text-danger"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!txtTerm.value">
+          <button (click)="back()" class="btn btn-secondary">Back</button>
+          &nbsp;
+          <button (click)="next()" class="btn btn-secondary">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

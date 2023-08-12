@@ -1,0 +1,53 @@
+{
+  "name": "angular-adv",
+  "version": "0.0.0",
+  "scripts": {
+    "start:dev": "nodemon projects/backend-server/index.js",
+    "start": "node projects/backend-server/index.js",
+    "start:admin": "ng serve adminpro03 --open"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~13.0.0",
+    "@angular/common": "~13.0.0",
+    "@angular/compiler": "~13.0.0",
+    "@angular/core": "~13.0.0",
+    "@angular/forms": "~13.0.0",
+    "@angular/platform-browser": "~13.0.0",
+    "@angular/platform-browser-dynamic": "~13.0.0",
+    "@angular/router": "~13.0.0",
+    "@types/gapi.auth2": "^0.0.55",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^3.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "express-fileupload": "^1.2.1",
+    "express-validator": "^6.14.0",
+    "google-auth-library": "^7.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.4",
+    "mongoose-unique-validator": "^3.0.0",
+    "ng2-charts": "^3.0.5",
+    "rxjs": "~7.4.0",
+    "sweetalert2": "^11.3.4",
+    "tslib": "^2.3.0",
+    "uuid": "^8.3.2",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~13.0.4",
+    "@angular/cli": "~13.0.1",
+    "@angular/compiler-cli": "~13.0.0",
+    "@types/jasmine": "~3.10.0",
+    "@types/node": "^12.11.1",
+    "jasmine-core": "~3.10.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "ng2-charts-schematics": "^0.1.7",
+    "typescript": "~4.4.3"
+  }
+}

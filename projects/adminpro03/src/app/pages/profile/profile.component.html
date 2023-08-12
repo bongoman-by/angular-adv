@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Change settings</h4>
+        <form
+          class="form p-t-20"
+          [formGroup]="settingsForm"
+          (ngSubmit)="onSubmitSettings()"
+          autocomplete="off"
+        >
+          <div class="form-group">
+            <label for="exampleInputuname">Name</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname"
+                placeholder="Name"
+                formControlName="name"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                placeholder="Enter email"
+                formControlName="email"
+                [readonly]="user.google"
+              />
+            </div>
+          </div>
+          <div *ngIf="!user.google">
+            <div class="form-group">
+              <label for="pwd1">Old Password</label>
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="pwd0"
+                  placeholder="Enter password"
+                  formControlName="oldPassword"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pwd1">New Password</label>
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="pwd1"
+                  placeholder="Enter new password"
+                  formControlName="password"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pwd2">Confirm New Password</label>
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="pwd2"
+                  placeholder="Confirm new password"
+                  formControlName="confirmPassword"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox checkbox-success">
+                <input
+                  id="checkbox1"
+                  type="checkbox"
+                  formControlName="signup"
+                />
+                <label for="checkbox1"> Remember me </label>
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-success waves-effect waves-light m-r-10"
+            [disabled]="checkSettingForm()"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div *ngIf="!user.google" class="card-body">
+        <h4 class="card-title">Change image</h4>
+        <form
+          class="form p-t-20"
+          [formGroup]="fileForm"
+          (ngSubmit)="onSubmitFile()"
+          autocomplete="off"
+        >
+          <div class="form-group">
+            <input
+              type="file"
+              class="form-control"
+              id="inputFile"
+              enctype="multipart/form-data"
+              aria-describedby="fileHelp"
+              formControlName="file"
+              (change)="onFileSelect($event)"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-success waves-effect waves-light m-r-10"
+            [disabled]="!fileForm.valid"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div class="text-center">
+        <div *ngIf="imageData">
+          <img
+            class="img-profile"
+            [src]="imageData"
+            [alt]="fileForm.value.name"
+          />
+        </div>
+        <div *ngIf="!imageData">
+          <img
+            class="img-profile"
+            [src]="user.image || '' | image"
+            [alt]="user.name"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

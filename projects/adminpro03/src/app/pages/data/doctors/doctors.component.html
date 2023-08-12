@@ -1,0 +1,107 @@
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="col-2">
+          <button class="btn btn-primary" routerLink="/dashboard/doctor/new">
+            <i class="fa fa-user"> Create doctor </i>
+          </button>
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Find doctor..."
+            (keyup)="search(txtTerm.value)"
+            #txtTerm
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Loading...</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Wait please</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loaded" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h4 class="card-title">Total count of doctors: {{ total }}</h4>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Photo</th>
+                <th>Name</th>
+                <th>User</th>
+                <th class="text-nowrap w100">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td class="text-center">
+                  <img
+                    [src]="item.image || '' | image: collection"
+                    alt="{{ item.name }}"
+                    class="avatar cursor"
+                    (click)="openModal(item)"
+                  />
+                </td>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  <img
+                    [src]="item.user?.image || '' | image"
+                    alt="{{ item.user?.name }}"
+                    class="avatar"
+                  />
+                  {{ item.user?.name }}
+                </td>
+                <td class="text-nowrap text-center">
+                  <div>
+                    <a
+                      data-toggle="tooltip"
+                      data-original-title="Delete"
+                      class="cursor"
+                      [routerLink]="['/dashboard', 'doctor', item._id]"
+                    >
+                      <i class="fa fa-pencil"></i>
+                    </a>
+                    &nbsp;
+                    <a
+                      data-toggle="tooltip"
+                      data-original-title="Delete"
+                      class="cursor"
+                      (click)="deleteItem(item, txtTerm.value)"
+                    >
+                      <i class="fa fa-trash text-danger"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!txtTerm.value">
+          <button (click)="back()" class="btn btn-secondary">Back</button>
+          &nbsp;
+          <button (click)="next()" class="btn btn-secondary">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

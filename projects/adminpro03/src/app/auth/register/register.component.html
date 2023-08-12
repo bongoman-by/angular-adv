@@ -1,0 +1,174 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<section
+  id="wrapper"
+  class="login-register login-sidebar"
+  style="background-image: url(../assets/images/background/login-register.jpg)"
+>
+  <div class="login-box card">
+    <div class="card-body">
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="form-horizontal form-material"
+        id="loginform"
+        autocomplete="off"
+      >
+        <a routerLink="/" class="text-center db"
+          ><img src="../assets/images/logo-icon.png" alt="Home" /><br /><img
+            src="../assets/images/logo-text.png"
+            alt="Home"
+        /></a>
+        <h3 class="box-title m-t-40 m-b-0">Register Now</h3>
+        <small>Create your account and enjoy</small>
+        <div class="form-group m-t-20">
+          <div class="col-xs-12">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Name"
+              formControlName="name"
+              autocomplete="off"
+            />
+            <div *ngIf="checkControl('name')" class="validation">
+              <p
+                *ngIf="checkError(getControl('name'), 'required')"
+                class="text-danger"
+              >
+                Name should be filled!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Email"
+              formControlName="email"
+            />
+            <div *ngIf="checkControl('email')" class="validation">
+              <p
+                *ngIf="checkError(getControl('email'), 'required')"
+                class="text-danger"
+              >
+                Email should be filled!
+              </p>
+
+              <p
+                *ngIf="checkError(getControl('email'), 'email')"
+                class="text-danger"
+              >
+                Email is not valid!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input
+              class="form-control"
+              type="password"
+              placeholder="Password"
+              formControlName="password"
+            />
+            <div *ngIf="checkControl('password')" class="validation">
+              <p
+                *ngIf="checkError(getControl('password'), 'required')"
+                class="text-danger"
+              >
+                Passport should be filled!
+              </p>
+
+              <p
+                *ngIf="checkError(getControl('password'), 'minlength')"
+                class="text-danger"
+              >
+                Length should be more 5 symbols!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input
+              class="form-control"
+              type="password"
+              placeholder="Confirm Password"
+              formControlName="confirmPassword"
+              autocomplete="off"
+            />
+            <div *ngIf="checkControl('confirmPassword')" class="validation">
+              <p
+                *ngIf="checkError(getControl('confirmPassword'), 'required')"
+                class="text-danger"
+              >
+                Confirm passport should be filled!
+              </p>
+
+              <p
+                *ngIf="checkError(getControl('confirmPassword'), 'minlength')"
+                class="text-danger"
+              >
+                Length should be more 5 symbols!
+              </p>
+
+              <p
+                *ngIf="checkError(getControl('confirmPassword'), 'notEquals')"
+                class="text-danger"
+              >
+                Passwords are not equals!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="checkbox checkbox-primary p-t-0">
+              <input
+                id="checkbox-signup"
+                type="checkbox"
+                formControlName="terms"
+              />
+              <label for="checkbox-signup">
+                I agree to all <a href="#">Terms</a></label
+              >
+              <div *ngIf="checkControl('terms')" class="validation">
+                <p
+                  *ngIf="checkError(getControl('terms'), 'notConfirmTerms')"
+                  class="text-danger"
+                >
+                  Should agree to Terms!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group text-center m-t-20">
+          <div class="col-xs-12">
+            <button
+              class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light"
+              type="submit"
+              [disabled]="!registerForm.valid"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+        <div class="form-group m-b-0">
+          <div class="col-sm-12 text-center">
+            <p>
+              Already have an account?
+              <a routerLink="/login" class="text-info m-l-5"><b>Sign In</b></a>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
