@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     window.google.accounts.id.initialize({
       client_id:
-        '379741309092-nb9cnmegl2kj6qi24f12lrup3dqv4c8p.apps.googleusercontent.com',
+        '439834552359-66sd6fpdvn7ap5jmtsvobvd3mot5r096.apps.googleusercontent.com',
       callback: this.handleCredentialResponse.bind(this),
     });
     window.google.accounts.id.renderButton(
@@ -102,5 +102,5 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  forgotPassword() {}
+  forgotPassword() { }
 }

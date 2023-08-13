@@ -4,7 +4,7 @@
   "scripts": {
     "start:dev": "nodemon projects/backend-server/index.js",
     "start": "node projects/backend-server/index.js",
-    "start:admin": "ng serve adminpro03 --open"
+    "start:admin": "ng serve adminpro03"
   },
   "private": true,
   "dependencies": {
